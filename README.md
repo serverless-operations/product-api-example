@@ -2,7 +2,7 @@
 
 ソースコードを展開してください。
 ```
-$ git clone 
+$ git clone git@github.com:serverless-operations/product-api-example.git
 $ cd product-api-example
 $ export NODE_ENV=test && yarn install　#Serverless Framework関連のライブラリをインストール
 $ export PYTHONPATH=./
