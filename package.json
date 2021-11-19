@@ -1,0 +1,16 @@
+{
+  "name": "product-api-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "docker-compose up -d"
+  },
+  "devDependencies": {
+    "inquirer": "^8.2.0",
+    "serverless": "^2.66.1",
+    "serverless-dotenv-plugin": "^3.10.0",
+    "serverless-offline": "^8.2.0",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}

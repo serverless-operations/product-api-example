@@ -1,0 +1,37 @@
+## 初期セットアップ
+
+ソースコードを展開してください。
+```
+$ git clone 
+$ cd product-api-example
+$ export NODE_ENV=test && yarn install　#Serverless Framework関連のライブラリをインストール
+$ export PYTHONPATH=./
+```
+
+Python 関連のライブラリのインストールします。venvを使用して環境を構築してください。 `requirements/dev.txt`には開発で使用するライブラリを記述します。本番で使用するライブラリは`requirements/prod.txt`にも記載してください。
+```
+$ python3 -m venv venv
+$ . venv/bin/activate
+$ pip3 install -r requirements/dev.txt
+```
+
+ライブラリをインストールした際は以下の手順で`requirements`配下のファイルに記述します。
+```
+$ pip3 install flake8
+$ pip3 freeze > requirements/dev.txt
+```
+
+## デプロイ
+
+```
+$ yarn serverless deploy --stage `ステージ名`
+```
+
+## ローカル開発
+
+ローカルサーバーを起動する。AuthorizerにはServerless Offlineが対応して使えないので注意が必要
+```
+$ yarn serverless offline --noAuth 
+```
+
+必要な環境変数は`.env`ファイルを作成して読み込む

@@ -1,0 +1,133 @@
+service: product-api
+
+provider:
+  name: aws
+  region: ap-northeast-1
+  stage: ${opt:stage, 'dev'}
+  runtime: python3.9
+  environment:
+    DynamoDBEndpoint: https://dynamodb.ap-northeast-1.amazonaws.com/
+    ProductsTableName: ${self:resources.Outputs.ProductsTableName.Value}
+  httpApi:
+    cors: true
+    authorizers:
+      auth0Authorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: https://product-api.jp.auth0.com/
+        audience:
+          - IVOmJ5RduvXZkmqJxM4kU3gpCJlh7Jj3
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:BatchGetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+      Resource:
+        - ${self:resources.Outputs.ProductsTableArn.Value}
+        - ${self:resources.Outputs.ProductsTableSearchIndexArn.Value}
+
+package:
+  exclude:
+    - "**"
+  include:
+    - "handlers/**"
+    - "lib/**"
+    - "!.serverless/**"
+
+functions:
+  productsGet:
+    handler: handlers/products/get.handler
+    events:
+      - httpApi:
+          path: /products
+          method: get
+  productsPost:
+    handler: handlers/products/post.handler
+    events:
+      - httpApi:
+          path: /products
+          method: post
+          authorizer:
+            name: auth0Authorizer
+  productsPut:
+    handler: handlers/products/put.handler
+    events:
+      - httpApi:
+          path: /products/{productId}
+          method: put
+          authorizer:
+            name: auth0Authorizer
+  productsDelete:
+    handler: handlers/products/delete.handler
+    events:
+      - httpApi:
+          path: /products/{productId}
+          method: delete
+          authorizer:
+            name: auth0Authorizer
+
+resources:
+  Resources:
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Products-${self:provider.stage}
+        AttributeDefinitions: 
+          - AttributeName: Id
+            AttributeType: S
+          - AttributeName: Key
+            AttributeType: S
+          - AttributeName: Value
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+          - AttributeName: Key
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        GlobalSecondaryIndexes:
+          - IndexName: SearchIndex
+            KeySchema:
+              - AttributeName: Key
+                KeyType: HASH
+              - AttributeName: Value
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+  Outputs:
+    ProductsTableName:
+      Value: !Ref ProductsTable
+      Export:
+        Name: ProductsTableName-${self:provider.stage}
+    ProductsTableArn:
+      Value: !GetAtt ProductsTable.Arn
+      Export:
+        Name: ProductsTableArn-${self:provider.stage}
+    ProductsTableSearchIndexArn:
+      Value:
+        Fn::Join:
+          - /
+          - - !GetAtt ProductsTable.Arn
+            - index
+            - SearchIndex
+      Export:
+        Name: ProductsTableSearchIndexArn-${self:provider.stage}
+
+custom:
+  pythonRequirements:
+    fileName: requirements/prod.txt
+
+plugins:
+  modules:
+    - serverless-python-requirements
+    - serverless-dotenv-plugin
+    - serverless-offline

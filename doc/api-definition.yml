@@ -1,0 +1,224 @@
+---
+openapi: 3.0.1
+info:
+  title: Product API
+  description: ProductAPI
+  version: 1.0.0
+
+paths:
+  /products:
+    get:
+      summary: 商品の一覧取得
+      description: |
+        商品の一覧を取得する
+      parameters:
+        - $ref: '#/components/parameters/nextTokenParam'
+      responses:
+        200:
+          $ref: '#/components/responses/GetProductListResponse'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: 商品の新規登録
+      description: |
+        商品を新規に登録する
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        201:
+          $ref: '#/components/responses/PostProductResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /products/{productId}:
+    put:
+      summary: 商品の更新
+      description: |
+        商品を更新する
+      security:
+        - Bearer: []
+      parameters:
+        - $ref: '#/components/parameters/productIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        204:
+          description: OK
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: 商品の削除
+      description: |
+        商品を削除する
+      security:
+        - Bearer: []
+      parameters:
+        - $ref: '#/components/parameters/productIdParam'
+      responses:
+        204:
+          description: OK
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Credentials or access token for API
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    ProductId:
+      type: object
+      description: 商品ID
+      properties:
+        id:
+          type: string
+          description: 商品ID
+          example: xxxx-dddd-eeeee-eeee
+    ProductInput:
+      type: object
+      description: 商品データ
+      properties:
+        name:
+          type: string
+          description: 商品名
+          example: ヘルメット
+        imageUrl:
+          type: string
+          description: 画像のURL
+          example: http://example.com
+        price:
+          type: number
+          description: 値段
+          example: 3000
+        description:
+          type: string
+          description: 災害時にかぶる折り畳み式ヘルメットです。半年前の避難訓練で１回しかかぶっていませんので、臭いもなくきれいです。
+          example: 3
+    Product:
+      type: object
+      description: 商品データ
+      properties:
+        id:
+          type: string
+          description: 商品ID
+          example: xxxx-dddd-eeeee-eeee
+        name:
+          type: string
+          description: 商品名
+          example: ヘルメット
+        imageUrl:
+          type: string
+          description: 画像のURL
+          example: http://example.com
+        price:
+          type: number
+          description: 値段
+          example: 3000
+        description:
+          type: string
+          description: 災害時にかぶる折り畳み式ヘルメットです。半年前の避難訓練で１回しかかぶっていませんので、臭いもなくきれいです。
+          example: 3
+        registrationDt:
+          type: string
+          description: 登録日
+          example: '2021-02-08T22:00:00'
+    ProductList:
+      type: object
+      required:
+        - count
+        - ProductList
+      properties:
+        count:
+          type: number
+          description: 全結果の件数
+          example: 1
+        nextToken:
+          type: string
+          description: 全ページ数
+          example: eyJFeGNsdXNpdmVTdGFydEtleSI6IG51bGwsICJib3RvX3RydW5jYXRlX2Ftb3VudCI6IDJ9
+        productList:
+          type: array
+          description: 商品のリスト
+          items:
+            $ref: '#/components/schemas/Product'
+  parameters:
+    nextTokenParam:
+      name: nextToken
+      in: query
+      required: false
+      description: 次ページのトークン情報
+      schema:
+        type: string
+    productIdParam:
+      name: productId
+      in: path
+      required: true
+      description: 商品ID
+      schema:
+        type: string
+      example: xxxx-dddd-eeeee-eeee
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnAuthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GetProductListResponse:
+      description: 商品の一覧
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductList'
+    PostProductResponse:
+      description: 商品の新規追加
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductId'
