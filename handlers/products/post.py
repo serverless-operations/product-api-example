@@ -70,7 +70,7 @@ def handler(event, context):
         )
 
         # 商品の登録に成功してHTTPステータス201と商品IDをレスポンス
-        return response_builder(203, {
+        return response_builder(201, {
             'product_id': id
         })
     except jsonschema.ValidationError as e:
