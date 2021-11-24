@@ -7,7 +7,7 @@ provider:
   runtime: python3.9
   environment:
     DynamoDBEndpoint: https://dynamodb.ap-northeast-1.amazonaws.com/
-    ProductsTableName: ${self:resources.Outputs.ProductsTableName.Value}
+    ProductsTableName: Products-${self:provider.stage}
   httpApi:
     cors: true
     authorizers:
@@ -129,5 +129,4 @@ custom:
 plugins:
   modules:
     - serverless-python-requirements
-    - serverless-dotenv-plugin
     - serverless-offline
