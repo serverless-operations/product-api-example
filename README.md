@@ -61,5 +61,3 @@ $ yarn serverless deploy --stage `ステージ名`
 ```
 $ yarn serverless offline --noAuth 
 ```
-
-必要な環境変数は`.env`ファイルを作成して読み込む
