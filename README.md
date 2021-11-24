@@ -1,8 +1,15 @@
+## 事前にPC上にインストールが必要なもの
+ローカル環境の状態に合わせて、以下のインストール状況を確認し、存在しなければインストールして下さい。
+- Python3: Python3.9以上をインストール
+- pip3: Pythonで使用するライブラリやツールを管理するパッケージマネージャー
+- nodejs: Serverless Frameworkを実行するために必要
+- yarn: Serverless Frameworkで使用するツールをインストールするために必要
+
 ## 初期セットアップ
 
 ソースコードを展開してください。
 ```
-$ git clone 
+$ git clone git@github.com:serverless-operations/product-api-example.git
 $ cd product-api-example
 $ export NODE_ENV=test && yarn install　#Serverless Framework関連のライブラリをインストール
 $ export PYTHONPATH=./
