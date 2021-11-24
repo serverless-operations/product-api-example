@@ -28,6 +28,27 @@ $ pip3 install flake8
 $ pip3 freeze > requirements/dev.txt
 ```
 
+## Lint
+
+pep8というコーディング規約にそって構文チェックを行います
+```
+$ flake8
+```
+
+## テスト
+
+pytestによる自動テストを行います。テストの前にDynamoDBのローカルコンテナを立ち上げてユニットテストからアクセスできるようにして下さい。
+
+コンテナの起動
+```
+$ yarn start
+```
+
+テストの実行
+```
+$ pytest -s
+```
+
 ## デプロイ
 
 ```
