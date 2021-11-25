@@ -68,6 +68,6 @@ def handler(event, context):
                 'nextToken': nextToken.decode('utf-8')
             }
 
-        return response_builder(204, response_body)
+        return response_builder(200, response_body)
     except Exception as e:
         raise e
