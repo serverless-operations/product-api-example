@@ -18,7 +18,6 @@ json_schema = {
     'required': [
         'name',
         'imageUrl',
-        'price',
         'description'
     ]
 }

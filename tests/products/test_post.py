@@ -20,12 +20,6 @@ class TestPostProducts(object):
         assert result.get('statusCode') == 400
         assert result.get('body') == '{"error_message": "\'imageUrl\' is a required property"}'
 
-    def test_validation_body_missing_price(self, missing_price_data):
-        """Bodyのパラメータにpriceが存在しない場合は400エラーを返す."""
-        result = post.handler(missing_price_data, {})
-        assert result.get('statusCode') == 400
-        assert result.get('body') == '{"error_message": "\'price\' is a required property"}'
-
     def test_validation_body_missing_description(self, missing_description_data):
         """Bodyのパラメータにdescriptionが存在しない場合は400エラーを返す."""
         result = post.handler(missing_description_data, {})
