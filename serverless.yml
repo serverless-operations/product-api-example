@@ -10,13 +10,7 @@ provider:
     ProductsTableName: Products-${self:provider.stage}
   httpApi:
     cors: true
-    authorizers:
-      auth0Authorizer:
-        type: jwt
-        identitySource: $request.header.Authorization
-        issuerUrl: https://product-api.jp.auth0.com/
-        audience:
-          - IVOmJ5RduvXZkmqJxM4kU3gpCJlh7Jj3
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -54,24 +48,18 @@ functions:
       - httpApi:
           path: /products
           method: post
-          authorizer:
-            name: auth0Authorizer
   productsPut:
     handler: handlers/products/put.handler
     events:
       - httpApi:
           path: /products/{productId}
           method: put
-          authorizer:
-            name: auth0Authorizer
   productsDelete:
     handler: handlers/products/delete.handler
     events:
       - httpApi:
           path: /products/{productId}
           method: delete
-          authorizer:
-            name: auth0Authorizer
 
 resources:
   Resources:

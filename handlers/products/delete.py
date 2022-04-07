@@ -21,16 +21,10 @@ def handler(event, context):
         products_table = dynamodb.Table(os.getenv('ProductsTableName'))
 
         # 更新対象の存在チェック
-        product = products_table.get_item(Key={
+        products_table.get_item(Key={
             'Id': product_id,
             'Key': 'owner'
         })
-
-        # 自分自身がownerのデータがチェック（他人のデータは消せない）
-        if (product.get('Item').get('Value') != event.get('requestContext').get('authorizer').get('jwt').get('claims').get('name')):
-            return response_builder(404, {
-                'error_message': 'request data is not found'
-            })
 
         # 削除対象のデータを取得
         result = products_table.query(

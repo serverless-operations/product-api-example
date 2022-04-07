@@ -61,13 +61,6 @@ def handler(event, context):
               'Value': str(int(time.time()))
           }
         )
-        products_table.put_item(
-          Item={
-              'Id': id,
-              'Key': 'owner',
-              'Value': event.get('requestContext').get('authorizer').get('jwt').get('claims').get('name')
-          }
-        )
 
         # 商品の登録に成功してHTTPステータス201と商品IDをレスポンス
         return response_builder(201, {
