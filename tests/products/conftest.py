@@ -281,6 +281,7 @@ def missing_image_url_data():
         "isBase64Encoded": False
     }
 
+
 @pytest.fixture
 def missing_price_data():
     return {
@@ -347,6 +348,7 @@ def missing_price_data():
         "isBase64Encoded": False
     }
 
+
 @pytest.fixture
 def missing_description_data():
     return {
@@ -408,7 +410,7 @@ def missing_description_data():
         "body": {
             "name": "ヘルメット",
             "imageUrl": "http://example.com",
-             "price": "3000"
+            "price": "3000"
         },
         "isBase64Encoded": False
     }
