@@ -1,6 +1,6 @@
 name: CI
 
-on: push
+on: [push, pull_request]
 
 jobs:
   test:
@@ -30,24 +30,3 @@ jobs:
           name: code-coverage-report
           path: reports
 
-  deploy-dev:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - run: |
-          curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          sudo npm install npm@latest -g
-          sudo npm install -g yarn
-      - run: |
-          yarn install
-      - run: |
-          yarn serverless deploy --stage staging
-        env:
-          AWS_ACCESS_KEY_ID: ${{secrets.STAGE_AWS_ACCESS_KEY_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.STAGE_AWS_SECRET_ACCESS_KEY}}
-          AWS_DEFAULT_REGION: ap-northeast-1

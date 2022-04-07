@@ -3,25 +3,8 @@ import os
 import boto3
 import uuid
 import time
-import jsonschema
 from lib.utils import response_builder
 from lib.decorators import api_handler
-
-json_schema = {
-    'type': 'object',
-    'properties': {
-        'name': {'type': 'string'},
-        'imageUrl': {'type': 'string'},
-        'price': {'type': 'string'},
-        'description': {'type': 'string'}
-    },
-    'required': [
-        'name',
-        'imageUrl',
-        'price',
-        'description'
-    ]
-}
 
 
 @api_handler
@@ -30,9 +13,6 @@ def handler(event, context):
     try:
         # リクエストBodyを取得
         body = event.get('body')
-
-        # リクエストデータのバリデーション
-        jsonschema.validate(body, json_schema)
 
         # 商品IDを生成
         id = str(uuid.uuid4())
