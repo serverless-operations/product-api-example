@@ -8,6 +8,30 @@ from lib.utils import parse_body
 class TestPostProducts(object):
     """新規商品追加のユニットテスト."""
 
+    def test_validation_body_missing_name(self, missing_name_data):
+        """Bodyのパラメータにnameが存在しない場合は400エラーを返す."""
+        result = post.handler(missing_name_data, {})
+        assert result.get('statusCode') == 400
+        assert result.get('body') == '{"error_message": "\'name\' is a required property"}'
+
+    def test_validation_body_missing_image_url(self, missing_image_url_data):
+        """BodyのパラメータにimageUrlが存在しない場合は400エラーを返す."""
+        result = post.handler(missing_image_url_data, {})
+        assert result.get('statusCode') == 400
+        assert result.get('body') == '{"error_message": "\'imageUrl\' is a required property"}'
+
+    def test_validation_body_missing_price(self, missing_price_data):
+        """Bodyのパラメータにpriceが存在しない場合は400エラーを返す."""
+        result = post.handler(missing_price_data, {})
+        assert result.get('statusCode') == 400
+        assert result.get('body') == '{"error_message": "\'price\' is a required property"}'
+
+    def test_validation_body_missing_description(self, missing_description_data):
+        """Bodyのパラメータにdescriptionが存在しない場合は400エラーを返す."""
+        result = post.handler(missing_description_data, {})
+        assert result.get('statusCode') == 400
+        assert result.get('body') == '{"error_message": "\'description\' is a required property"}'
+
     def test_correct_body(self, correct_input_data):
         """Bodyのパラメータが正常な場合はDBに登録しては201を返す."""
         result = post.handler(correct_input_data, {})
