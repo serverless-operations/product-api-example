@@ -53,9 +53,5 @@ def handler(event, context):
         return response_builder(201, {
             'product_id': id
         })
-    except jsonschema.ValidationError as e:
-        return response_builder(400, {
-            'error_message': e.message
-        })
     except Exception as e:
         raise e
