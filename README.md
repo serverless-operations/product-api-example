@@ -61,5 +61,3 @@ $ yarn serverless deploy --stage `ステージ名`
 ```
 $ yarn serverless offline --noAuth 
 ```
-
-aaaa
