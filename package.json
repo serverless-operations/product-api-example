@@ -5,9 +5,11 @@
   "license": "MIT",
   "scripts": {
     "start": "docker-compose up -d",
-    "offline": "nodemon -e py --exec serverless offline"
+    "offline": "nodemon -e py --exec serverless offline",
+    "apimock-start": "./node_modules/.bin/prism mock -h 0.0.0.0 -p 4010 './doc/api-definition.yml'"
   },
   "devDependencies": {
+    "@stoplight/prism-cli": "^4.9.2",
     "inquirer": "^8.2.0",
     "nodemon": "^2.0.15",
     "serverless": "^3.12.0",
