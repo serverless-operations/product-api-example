@@ -13,6 +13,7 @@ from boto3.dynamodb.conditions import Key
 def handler(event, context):
     """商品一覧取得API."""
     try:
+        raise Exception
         dynamodb = boto3.resource(
             'dynamodb',
             endpoint_url=os.getenv('DynamoDBEndpoint')

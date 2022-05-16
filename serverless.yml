@@ -60,6 +60,12 @@ functions:
       - httpApi:
           path: /products/{productId}
           method: delete
+  errorNotifications:
+    handler: handlers/error.handler
+    events:
+      - cloudwatchLog:
+          logGroup: '/aws/lambda/${self:service}-${self:provider.stage}-productsGet'
+          filter: 'ERROR'
 
 resources:
   Resources:
